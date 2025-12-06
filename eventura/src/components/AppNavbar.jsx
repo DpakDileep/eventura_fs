@@ -9,8 +9,11 @@ import {
   NavbarBrand,
   NavLink,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function AppNavbar() {
+  const navigate = useNavigate();
+
   return (
     <Navbar className="shadow">
       <Container fluid className="mx-4 p-2">
@@ -38,7 +41,12 @@ export default function AppNavbar() {
           <NavLink>My Tickets</NavLink>
           <NavLink>Create Event</NavLink>
           <Button variant="outline-dark rounded-pill ms-3">SignIn</Button>
-          <Button variant="outline-dark rounded-pill ms-3">SignUp</Button>
+          <Button
+            variant="outline-dark rounded-pill ms-3"
+            onClick={() => navigate("/signup")}
+          >
+            SignUp
+          </Button>
         </Nav>
       </Container>
     </Navbar>

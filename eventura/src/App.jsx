@@ -7,10 +7,10 @@ import Signup from "./components/Signup";
 function App() {
   return (
     <>
-      <AppNavbar />
-      <Homepage />
       <BrowserRouter>
+        <AppNavbar />
         <Routes>
+          <Route path="/" element={<Homepage />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
         </Routes>
       </BrowserRouter>
