@@ -37,7 +37,7 @@ export default function Signup() {
   };
 
   function handleChange(event) {
-    setUser({ ...user, [event.target.name]: [event.target.value] });
+    setUser({ ...user, [event.target.name]: event.target.value });
   }
 
   return (
