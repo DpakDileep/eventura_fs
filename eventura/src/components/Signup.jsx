@@ -24,19 +24,19 @@ export default function Signup() {
       event.stopPropagation();
     }
     setValidated(true);
-    event.preventDefault()
-    setUsers([...users,user])
+    event.preventDefault();
+    setUsers([...users, user]);
     setUser({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  })
-   localStorage.setItem("users", JSON.stringify([...users, user]));
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    });
+    localStorage.setItem("users", JSON.stringify([...users, user]));
   };
 
   function handleChange(event) {
-    setUser({ ...user, [event.target.name] : [event.target.value] });
+    setUser({ ...user, [event.target.name]: [event.target.value] });
   }
 
   return (
