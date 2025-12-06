@@ -17,7 +17,7 @@ export default function AppNavbar() {
   const currentUser = JSON.parse(sessionStorage?.getItem("currentUser"));
 
   return (
-    <Navbar className="shadow">
+    <Navbar className="shadow fixed-top bg-body-tertiary">
       <Container fluid className="mx-4 p-2">
         <NavbarBrand href="/">Eventura</NavbarBrand>
         <InputGroup
