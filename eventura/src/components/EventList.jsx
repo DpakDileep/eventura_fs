@@ -8,7 +8,7 @@ export default function EventList({ events }) {
       <Row>
         {events.map((event) => {
           return (
-            <Col key={event.id} xs={12} sm={8} md={6} lg={4} className="mb-4"> 
+            <Col key={event.id} xs={12} sm={8} md={6} lg={3} className="mb-4"> 
               <EventCard event={event} />
             </Col>
           );

@@ -10,7 +10,7 @@ export default function EventCard({ event }) {
         style={{ height: "150px", objectFit: "cover" }}
       />
 
-      <CardBody>
+      <CardBody className="d-flex flex-column">
         <h1 style={{ fontSize: "25px", fontWeight: "bold" }}>{event.title}</h1>
 
         <p className="text-muted" style={{ fontWeight: "600px" }}>
@@ -19,7 +19,9 @@ export default function EventCard({ event }) {
 
         <p className="text-muted">{event.location}</p>
 
-        <p style={{ fontSize: "20px", fontWeight: "bold" }}>{event.price}</p>
+        <p style={{ fontSize: "20px", fontWeight: "bold", marginTop: "auto" }}>
+          {event.price}
+        </p>
       </CardBody>
     </Card>
   );
