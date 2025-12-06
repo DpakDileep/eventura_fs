@@ -3,7 +3,7 @@ import { Card, CardBody, CardImg } from "react-bootstrap";
 
 export default function EventCard({ event }) {
   return (
-    <Card style={{ maxWidth: "350px" }}>
+    <Card className="h-100" style={{ maxWidth: "350px" }}>
       <CardImg
         src={event.imageUrl}
         alt={event.title}
