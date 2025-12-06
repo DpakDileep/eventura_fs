@@ -6,9 +6,11 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
 import signupImage from "../assets/images/signup-image.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -32,18 +34,21 @@ export default function Signup() {
         password: "",
       });
       localStorage.setItem("users", JSON.stringify([...users, user]));
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("currentUser", JSON.stringify(user));
+      navigate("/");
     }
     setValidated(true);
   };
 
   function handleChange(event) {
-    setUser({ ...user, [event.target.name]: [event.target.value] });
+    setUser({ ...user, [event.target.name]: event.target.value });
   }
 
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "calc(100vh - 108px)" }}
     >
       <Card style={{ width: "80%", maxWidth: "900px" }}>
         <Row className="g-0">
