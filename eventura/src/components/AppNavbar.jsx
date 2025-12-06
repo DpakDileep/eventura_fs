@@ -10,6 +10,7 @@ import {
   NavLink,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Logo from "../assets/images/logo.png";
 
 export default function AppNavbar() {
   const navigate = useNavigate();
@@ -19,7 +20,9 @@ export default function AppNavbar() {
   return (
     <Navbar className="shadow fixed-top bg-body-tertiary">
       <Container fluid className="mx-4 p-2">
-        <NavbarBrand href="/">Eventura</NavbarBrand>
+        <NavbarBrand href="/">
+          <img src={Logo} alt="Logo" width={"150px"}/>
+        </NavbarBrand>
         <InputGroup
           className="border rounded-pill overflow-hidden ms-auto"
           style={{ maxWidth: "750px" }}
@@ -56,7 +59,7 @@ export default function AppNavbar() {
                 onClick={() => navigate("/login")}
               >
                 Login
-              </Button>                               
+              </Button>
               <Button
                 variant="outline-dark rounded-pill ms-3"
                 onClick={() => navigate("/signup")}

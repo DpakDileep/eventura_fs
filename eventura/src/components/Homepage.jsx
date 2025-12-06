@@ -29,7 +29,8 @@ export default function Homepage() {
           src={Banner}
           alt="Homepage Banner"
           width={"100%"}
-          style={{ marginTop: "100px" }}
+          className="rounded-4"
+          style={{ marginTop: "120px" }}
         />
       </Container>
       <Container className="mt-5">
