@@ -23,10 +23,12 @@ export default function Login() {
       (u) => u.email == user.email && u.password == user.password
     );
     if (existUser) {
-      alert("login Succesfull");
+      alert("Login Succesfull");
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("currentUser", JSON.stringify(existUser));
       navigate("/");
     } else {
-      alert("invalid email or Password");
+      alert("Invalid Email or Password");
     }
   };
 

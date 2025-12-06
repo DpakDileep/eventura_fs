@@ -46,12 +46,17 @@ export default function AppNavbar() {
             <>
               <NavLink>Dashboard</NavLink>
               <NavLink>
-                <i className="bi bi-person-circle">{" "}{currentUser.firstName}</i>
+                <i className="bi bi-person-circle"> {currentUser.firstName}</i>
               </NavLink>
             </>
           ) : (
             <>
-              <Button variant="outline-dark rounded-pill ms-3">SignIn</Button>
+              <Button
+                variant="outline-dark rounded-pill ms-3"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>                               
               <Button
                 variant="outline-dark rounded-pill ms-3"
                 onClick={() => navigate("/signup")}
