@@ -10,6 +10,7 @@ export default function Login() {
     JSON.parse(localStorage.getItem("users")) || []
   );
   const navigate = useNavigate();
+  const [showPassword,setShowPassword]=useState(false)
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -18,7 +19,6 @@ export default function Login() {
       event.stopPropagation();
     }
     event.preventDefault();
-    setValidated(true);
     const existUser = users.find(
       (u) => u.email == user.email && u.password == user.password
     );
@@ -78,16 +78,19 @@ export default function Login() {
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="validationCustom03">
                     <Form.Label>Password</Form.Label>
+                    <InputGroup>
                     <Form.Control
-                      type="password"
+                      type={showPassword?"text":"password"}
                       placeholder="********"
                       required
                       name="password"
                       onChange={handleChange}
                     />
+                    <Button variant="outline-secondary border-0" onClick={()=>showPassword?setShowPassword(false):setShowPassword(true)}><i className={showPassword?"bi bi-eye-slash":"bi bi-eye"}></i></Button>
                     <Form.Control.Feedback type="invalid">
                       Please provide a valid password.
                     </Form.Control.Feedback>
+                    </InputGroup>
                   </Form.Group>
                 </Row>
                 <Button type="submit" className="w-100">

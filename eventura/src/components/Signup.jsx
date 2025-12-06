@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [validated, setValidated] = useState(false);
+  const [showPassword,setShowPassword]=useState(false)
   const navigate = useNavigate();
   const [user, setUser] = useState({
     firstName: "",
@@ -116,17 +117,22 @@ export default function Signup() {
                 <Row className="mb-3">
                   <Form.Group as={Col} md="12" controlId="validationCustom03">
                     <Form.Label>Password</Form.Label>
+                    <InputGroup>
                     <Form.Control
-                      type="password"
+                      type={showPassword?"text":"password"}
                       placeholder="********"
                       required
                       name="password"
                       onChange={handleChange}
                       value={user.password}
                     />
+                    <Button variant="outline-secondary border-0" onClick={()=>showPassword?setShowPassword(false):setShowPassword(true)}>
+                      <i className={showPassword?"bi bi-eye-slash":"bi bi-eye"}></i>
+                    </Button>
                     <Form.Control.Feedback type="invalid">
                       Please provide a valid password.
                     </Form.Control.Feedback>
+                    </InputGroup>
                   </Form.Group>
                 </Row>
 
