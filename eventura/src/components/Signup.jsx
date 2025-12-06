@@ -22,17 +22,18 @@ export default function Signup() {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+    } else {
+      event.preventDefault();
+      setUsers([...users, user]);
+      setUser({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      });
+      localStorage.setItem("users", JSON.stringify([...users, user]));
     }
     setValidated(true);
-    event.preventDefault();
-    setUsers([...users, user]);
-    setUser({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-    });
-    localStorage.setItem("users", JSON.stringify([...users, user]));
   };
 
   function handleChange(event) {
