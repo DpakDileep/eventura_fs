@@ -35,7 +35,7 @@ export default function Homepage() {
           alt="Homepage Banner"
           width={"100%"}
           className="rounded-4"
-          style={{ marginTop: "120px" }}
+          style={{ paddingTop: "120px" }}
         />
       </Container>
       <Container className="mt-5">

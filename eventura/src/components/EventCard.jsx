@@ -1,9 +1,11 @@
 import React from "react";
 import { Card, CardBody, CardImg } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function EventCard({ event }) {
+  const navigate = useNavigate();
   return (
-    <Card className="h-100" style={{ maxWidth: "350px" }}>
+    <Card className="h-100" style={{ maxWidth: "350px" }} onClick={()=>navigate("/eventdetails", { state : {event : event}})}>
       <CardImg
         src={event.imageUrl}
         alt={event.title}
