@@ -9,39 +9,44 @@ import { Card, CardBody, Container } from "react-bootstrap";
 
 export default function CreateEvent() {
   const [validated, setValidated] = useState(false);
+  const [newEvent, setNewEvent] = useState({
+    title: "",
+    organizer: "",
+    imageUrl: "",
+    date: "",
+    time: "",
+    location: "",
+    email: "",
+    price: "",
+    capacity: "",
+    category: "",
+    description: "",
+  });
+  const [events, setEvents] = useState(
+    JSON.parse(localStorage.getItem("events")) || []
+  );
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  function handleChange(e) {
+    setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
+  }
+
+  const handleSubmit = (e) => {
+    const form = e.currentTarget;
+    e.preventDefault();
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      e.stopPropagation();
+    } else {
+      const ids = events.map((event) => Number(event.id));
+      const maxId = Math.max(...ids);
+      const indexedEvent = { ...newEvent, id: (maxId + 1).toString() };
+      const updatedEvents = [...events, indexedEvent];
+      localStorage.setItem("events", JSON.stringify(updatedEvents));
+      navigate("/");
     }
 
     setValidated(true);
   };
-
-  //   const navigate = useNavigate();
-  //   const [events, setEvents] = useState(
-  //     JSON.parse(localStorage.getItem("events")) || []
-  //   );
-  //   const newEvent = {
-  //     id: 111,
-  //     title: "Introduction to Quantum Computing & Qubits",
-  //     imageUrl:
-  //       "https://placehold.co/400x200/007bff/FFFFFF?text=Quantum+Computing",
-  //     date: "Wed, May 20, 2026",
-  //     time: "10:00 AM - 11:30 AM IST",
-  //     location: "Online / Zoom",
-  //     organizer: "The Physics Institute",
-  //     price: "$15.00",
-  //     capacity: 250,
-  //   };
-  //   function handleAddNewEvent(event) {
-  //     event.preventDefault();
-  //     setEvents([...events, newEvent]);
-  //     localStorage.setItem("events", JSON.stringify([...events, newEvent]));
-  //     navigate("/");
-  //   }
 
   return (
     <div>
@@ -52,7 +57,7 @@ export default function CreateEvent() {
         }}
         className="d-flex justify-content-center align-items-center"
       >
-        <Card className="shadow-sm" style={{ width: "75%"}}>
+        <Card className="shadow-sm" style={{ width: "75%" }}>
           <CardBody className="p-4">
             <h3 className="text-center mb-4">Host a New Event</h3>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -63,6 +68,9 @@ export default function CreateEvent() {
                     required
                     type="text"
                     placeholder="e.g., Laugh Out Loud: Stand-up Comedy Night"
+                    name="title"
+                    value={newEvent.title}
+                    onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide an event title.
@@ -75,8 +83,10 @@ export default function CreateEvent() {
                     type="text"
                     placeholder="e.g., Siva Tech Events"
                     name="organizer"
+                    onChange={handleChange}
+                    value={newEvent.organizer}
                   />
-                  <Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">
                     Please provide the organizer's name.
                   </Form.Control.Feedback>
                 </Form.Group>
@@ -90,6 +100,8 @@ export default function CreateEvent() {
                       placeholder="e.g., Sat, May 20, 2026"
                       name="date"
                       required
+                      value={newEvent.date}
+                      onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
                       Please provide a date.
@@ -104,6 +116,8 @@ export default function CreateEvent() {
                     placeholder="e.g., 10:00 AM - 11:30 AM IST"
                     name="time"
                     required
+                    value={newEvent.time}
+                    onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide a time.
@@ -116,6 +130,8 @@ export default function CreateEvent() {
                     placeholder="e.g., The Comedy Lounge, Mumbai"
                     name="location"
                     required
+                    value={newEvent.location}
+                    onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide a location
@@ -134,6 +150,8 @@ export default function CreateEvent() {
                       type="url"
                       placeholder="https://images.unsplash.com/..."
                       name="imageUrl"
+                      value={newEvent.imageUrl}
+                      onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
                       Please provide a valid image URL.
@@ -149,6 +167,8 @@ export default function CreateEvent() {
                       type="email"
                       placeholder="contact@example.com"
                       name="email"
+                      value={newEvent.email}
+                      onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
                       Please provide a valid contact email.
@@ -166,6 +186,8 @@ export default function CreateEvent() {
                       type="text"
                       placeholder="e.g., 750 or Free"
                       name="price"
+                      value={newEvent.price}
+                      onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
                       Please provide a price.
@@ -180,6 +202,8 @@ export default function CreateEvent() {
                     placeholder="e.g., 150"
                     name="capacity"
                     min="1"
+                    value={newEvent.capacity}
+                    onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide the event capacity.
@@ -187,7 +211,12 @@ export default function CreateEvent() {
                 </Form.Group>
                 <Form.Group as={Col} md="4" controlId="validationCustom10">
                   <Form.Label>Category</Form.Label>
-                  <Form.Select required name="category">
+                  <Form.Select
+                    required
+                    name="category"
+                    value={newEvent.category}
+                    onChange={handleChange}
+                  >
                     <option value="">Select Category...</option>
                     <option value="tech">Tech</option>
                     <option value="music">Music</option>
@@ -211,6 +240,8 @@ export default function CreateEvent() {
                     rows={3}
                     placeholder="A brief and exciting description of the event..."
                     name="description"
+                    value={newEvent.description}
+                    onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide a detailed description.
@@ -218,7 +249,7 @@ export default function CreateEvent() {
                 </Form.Group>
               </Row>
 
-              <Button type="submit" className="w-100 mt-3  btn-dark" size="lg" >
+              <Button type="submit" className="w-100 mt-3  btn-dark" size="lg">
                 <i className="bi bi-calendar-plus me-2"></i> Publish New Event
               </Button>
             </Form>
