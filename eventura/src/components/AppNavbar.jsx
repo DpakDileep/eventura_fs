@@ -44,7 +44,7 @@ export default function AppNavbar() {
         </InputGroup>
         <Nav className="ms-auto">
           <NavLink>My Tickets</NavLink>
-          <NavLink>Create Event</NavLink>
+          <NavLink onClick={() => navigate("/CreateEvent")}>Create Event</NavLink>
           {isLoggedIn ? (
             <>
               <NavLink>Dashboard</NavLink>

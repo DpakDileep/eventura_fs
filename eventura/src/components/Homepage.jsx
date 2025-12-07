@@ -5,13 +5,18 @@ import { Button, Container } from "react-bootstrap";
 import Banner from "../assets/images/banner2.png";
 
 export default function Homepage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(
+    JSON.parse(localStorage.getItem("events")) || []
+  );
   const [visibleCard, setVisibleCard] = useState(4);
 
   useEffect(() => {
-    axios.get("/sampleEvents.json").then((response) => {
-      setEvents(response.data);
-    });
+    if (events.length === 0) {
+      axios.get("/sampleEvents.json").then((response) => {
+        setEvents([...response.data]);
+        localStorage.setItem("events", JSON.stringify([...response.data]));
+      });
+    }
   }, []);
 
   function handleShowMore() {
