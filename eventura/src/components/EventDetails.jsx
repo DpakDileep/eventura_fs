@@ -14,6 +14,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function EventDetails() {
   const location = useLocation();
   const navigate = useNavigate();
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser")) || {};
+  const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn")) || "";
   const [event, setEvent] = useState(location?.state?.event);
   const [allEvents, setAllEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
@@ -24,8 +26,6 @@ export default function EventDetails() {
     localStorage.setItem("events", JSON.stringify(deletedEvents));
     navigate("/dashboard");
   }
-  const currentUser = JSON.parse(sessionStorage.getItem("currentUser")) || {};
-  const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn")) || "";
 
   const [show, setShow] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -74,8 +74,6 @@ export default function EventDetails() {
       };
       const updatedTickets = [...tickets, ticket];
       setTickets(updatedTickets);
-      console.log(ticket);
-      console.log(tickets);
       localStorage.setItem("tickets", JSON.stringify(updatedTickets));
       alert("Ticket Reserved Successfully!");
       handleHideModal();
@@ -181,7 +179,6 @@ export default function EventDetails() {
                       variant="warning"
                       className=" mt-3 fw-bold py-2 bi bi-pencil"
                       onClick={() => {
-                        handleShowModal();
                         navigate("/create-event", { state: { value: event } });
                       }}
                     >
@@ -193,7 +190,7 @@ export default function EventDetails() {
                   </div>
                 </>
               ) : (
-                <Button variant="primary" className="w-100 mt-3 fw-bold py-2">
+                <Button variant="primary" className="w-100 mt-3 fw-bold py-2" onClick={handleShowModal}>
                   Reserve a Seat
                 </Button>
               )}

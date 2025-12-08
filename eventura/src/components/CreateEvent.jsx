@@ -86,7 +86,7 @@ export default function CreateEvent() {
       };
       const updatedEvents = [...events, indexedEvent];
       localStorage.setItem("events", JSON.stringify(updatedEvents));
-      navigate("/");
+      navigate("/dashboard");
     }
 
     setValidated(true);
