@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -9,6 +9,8 @@ import { Card, CardBody, Container } from "react-bootstrap";
 
 export default function CreateEvent() {
   const [validated, setValidated] = useState(false);
+  const location = useLocation();
+  const [updateIndex,setUpdateIndex]=useState("")
   const [newEvent, setNewEvent] = useState({
     title: "",
     organizer: "",
@@ -22,10 +24,17 @@ export default function CreateEvent() {
     category: "",
     description: "",
   });
+  useEffect(() => {
+    setNewEvent(location?.state?.value);
+     setUpdateIndex(location?.state?.value?.id);
+  }, [location.state]);
+
   const [events, setEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
   );
-  const [currentUser] = useState(JSON.parse(sessionStorage.getItem("currentUser")))
+  const [currentUser] = useState(
+    JSON.parse(sessionStorage.getItem("currentUser"))
+  );
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -37,10 +46,36 @@ export default function CreateEvent() {
     e.preventDefault();
     if (form.checkValidity() === false) {
       e.stopPropagation();
-    } else {
+    }else if(location.state){
+      const updatedEvent=events.map((event,index)=>{
+          if(event.id==updateIndex){
+            return{  ...event,  
+      ...newEvent, 
+      id: event.id,
+     price: newEvent.price.startsWith("₹")
+        ? newEvent.price
+        : `₹${newEvent.price}`
+            
+          }
+        }
+        else{
+          return event
+        }
+      })
+      
+      setEvents(updatedEvent)
+      localStorage.setItem("events",JSON.stringify(updatedEvent))
+      navigate("/dashboard")
+    } 
+    else {
       const ids = events.map((event) => Number(event.id));
       const maxId = Math.max(...ids);
-      const indexedEvent = { ...newEvent, id: (maxId + 1).toString(), price: `₹${newEvent.price}`, email: newEvent.email || currentUser?.email };
+      const indexedEvent = {
+        ...newEvent,
+        id: (maxId + 1).toString(),
+        price: `₹${newEvent.price}`,
+        email: newEvent.email || currentUser?.email,
+      };
       const updatedEvents = [...events, indexedEvent];
       localStorage.setItem("events", JSON.stringify(updatedEvents));
       navigate("/");
@@ -70,7 +105,7 @@ export default function CreateEvent() {
                     type="text"
                     placeholder="e.g., Laugh Out Loud: Stand-up Comedy Night"
                     name="title"
-                    value={newEvent.title}
+                    value={newEvent?.title}
                     onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -85,7 +120,7 @@ export default function CreateEvent() {
                     placeholder="e.g., Siva Tech Events"
                     name="organizer"
                     onChange={handleChange}
-                    value={newEvent.organizer}
+                    value={newEvent?.organizer}
                   />
                   <Form.Control.Feedback type="invalid">
                     Please provide the organizer's name.
@@ -101,7 +136,7 @@ export default function CreateEvent() {
                       placeholder="e.g., Sat, May 20, 2026"
                       name="date"
                       required
-                      value={newEvent.date}
+                      value={newEvent?.date}
                       onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -117,7 +152,7 @@ export default function CreateEvent() {
                     placeholder="e.g., 10:00 AM - 11:30 AM IST"
                     name="time"
                     required
-                    value={newEvent.time}
+                    value={newEvent?.time}
                     onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -131,7 +166,7 @@ export default function CreateEvent() {
                     placeholder="e.g., The Comedy Lounge, Mumbai"
                     name="location"
                     required
-                    value={newEvent.location}
+                    value={newEvent?.location}
                     onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -151,7 +186,7 @@ export default function CreateEvent() {
                       type="url"
                       placeholder="https://images.unsplash.com/..."
                       name="imageUrl"
-                      value={newEvent.imageUrl}
+                      value={newEvent?.imageUrl}
                       onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -168,7 +203,7 @@ export default function CreateEvent() {
                       type="email"
                       placeholder="contact@example.com"
                       name="email"
-                      value={newEvent.email || currentUser?.email}
+                      value={newEvent?.email || currentUser?.email}
                       onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -187,7 +222,7 @@ export default function CreateEvent() {
                       type="text"
                       placeholder="e.g., 750 or Free"
                       name="price"
-                      value={newEvent.price}
+                      value={newEvent?.price}
                       onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">
@@ -203,7 +238,7 @@ export default function CreateEvent() {
                     placeholder="e.g., 150"
                     name="capacity"
                     min="1"
-                    value={newEvent.capacity}
+                    value={newEvent?.capacity}
                     onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -215,7 +250,7 @@ export default function CreateEvent() {
                   <Form.Select
                     required
                     name="category"
-                    value={newEvent.category}
+                    value={newEvent?.category}
                     onChange={handleChange}
                   >
                     <option value="">Select Category...</option>
@@ -241,7 +276,7 @@ export default function CreateEvent() {
                     rows={3}
                     placeholder="A brief and exciting description of the event..."
                     name="description"
-                    value={newEvent.description}
+                    value={newEvent?.description}
                     onChange={handleChange}
                   />
                   <Form.Control.Feedback type="invalid">
@@ -250,9 +285,9 @@ export default function CreateEvent() {
                 </Form.Group>
               </Row>
 
-              <Button type="submit" className="w-100 mt-3  btn-dark" size="lg">
+             {location.state?<Button type="submit" className="w-100 mt-3  btn-warning bi bi-pencil" size="lg"> Update</Button>:<Button type="submit" className="w-100 mt-3  btn-dark" size="lg">
                 <i className="bi bi-calendar-plus me-2"></i> Publish New Event
-              </Button>
+              </Button>}
             </Form>
           </CardBody>
         </Card>

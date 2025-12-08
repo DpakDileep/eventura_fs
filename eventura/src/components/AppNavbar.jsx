@@ -74,7 +74,7 @@ export default function AppNavbar() {
           </NavLink>
           {isLoggedIn ? (
             <>
-              <NavLink>Dashboard</NavLink>
+              <NavLink onClick={()=>navigate("/dashboard")}>Dashboard</NavLink>
               <NavLink>
                 <span
                   ref={target}
