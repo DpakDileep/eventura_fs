@@ -14,8 +14,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function EventDetails() {
   const location = useLocation();
   const navigate = useNavigate();
-  const event = location?.state?.event;
-
+  const [event, setEvent] = useState(location?.state?.event);
+  const [allEvents, setAllEvents] = useState(
+    JSON.parse(localStorage.getItem("events")) || []
+  );
+  const [ownEvent, setOwnEvent] = useState(event.email == currentUser.email);
+  function handleDelete(id) {
+    const deletedEvents = allEvents.filter((e) => e.id !== id);
+    localStorage.setItem("events", JSON.stringify(deletedEvents));
+    navigate("/dashboard");
+  }
   const currentUser = JSON.parse(sessionStorage.getItem("currentUser")) || {};
   const isLoggedIn = JSON.parse(sessionStorage.getItem("isLoggedIn")) || "";
 
@@ -159,13 +167,36 @@ export default function EventDetails() {
                 <strong>Contact Email:</strong>{" "}
                 <a href={`mailto:${event.email}`}>{event.email}</a>
               </p>
-              <Button
-                variant="primary"
-                className="w-100 mt-3 fw-bold py-2"
-                onClick={handleShowModal}
-              >
-                Reserve a Seat
-              </Button>
+              {ownEvent ? (
+                <>
+                  <div className="d-flex justify-content-between mx-5">
+                    <Button
+                      variant="danger"
+                      className=" mt-3 fw-bold py-2 bi bi-trash"
+                      onClick={() => handleDelete(event.id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      variant="warning"
+                      className=" mt-3 fw-bold py-2 bi bi-pencil"
+                      onClick={() => {
+                        handleShowModal();
+                        navigate("/create-event", { state: { value: event } });
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </div>
+                  <div className="text-center mt-4">
+                    <a href="">Have Assistence ?</a>
+                  </div>
+                </>
+              ) : (
+                <Button variant="primary" className="w-100 mt-3 fw-bold py-2">
+                  Reserve a Seat
+                </Button>
+              )}
             </div>
           </Col>
         </Row>
