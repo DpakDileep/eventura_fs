@@ -8,6 +8,10 @@ import {
   Navbar,
   NavbarBrand,
   NavLink,
+  OverlayTrigger,
+  Popover,
+  PopoverBody,
+  Tooltip,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/logo.png";
@@ -20,7 +24,7 @@ export default function AppNavbar() {
   const [show, setShow] = useState(false);
   const target = useRef(null);
   const [eventName, setEventName] = useState("");
-  const [eventLocation,setEventLocation]=useState("")
+  const [eventLocation, setEventLocation] = useState("");
 
   function handleLogout() {
     sessionStorage.removeItem("currentUser");
@@ -48,7 +52,7 @@ export default function AppNavbar() {
             onKeyDown={(e) => {
               if (e.key == "Enter") {
                 navigate("/events", { state: { value: eventName } });
-                e.target.value=""
+                e.target.value = "";
               }
             }}
           />
@@ -59,7 +63,7 @@ export default function AppNavbar() {
             onKeyDown={(e) => {
               if (e.key == "Enter") {
                 navigate("/events", { state: { location: eventLocation } });
-                e.target.value=""
+                e.target.value = "";
               }
             }}
           />
@@ -74,45 +78,34 @@ export default function AppNavbar() {
           </NavLink>
           {isLoggedIn ? (
             <>
-              <NavLink onClick={()=>navigate("/dashboard")}>Dashboard</NavLink>
+              <NavLink onClick={() => navigate("/dashboard")}>
+                Dashboard
+              </NavLink>
               <NavLink>
-                <span
-                  ref={target}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setShow(!show)}
-                >
-                  <i className="bi bi-person-circle"> </i>
-                  {currentUser.firstName}
-                </span>
-                {target.current && (
-                  <Overlay
-                    target={target.current}
-                    show={show}
-                    placement="bottom"
-                  >
-                    {(props) => (
-                      <div
-                        {...props}
-                        style={{
-                          position: "absolute",
-                          padding: "2px 10px",
-                          color: "black",
-                          borderRadius: 3,
-                          zIndex: 2000,
-                          ...props.style,
-                        }}
-                      >
+                <OverlayTrigger
+                  trigger="click"
+                  placement="bottom"
+                  rootClose
+                  overlay={
+                    <Popover>
+                      <PopoverBody>
                         <Button
                           variant="danger"
+                          className="w-100 bi bi-door-closed-fill"
                           style={{ fontSize: 15 }}
                           onClick={handleLogout}
                         >
-                          LogOut
+                          {" "}LogOut
                         </Button>
-                      </div>
-                    )}
-                  </Overlay>
-                )}
+                      </PopoverBody>
+                    </Popover>
+                  }
+                >
+                  <span style={{ cursor: "pointer" }}>
+                    <i className="bi bi-person-circle"></i>{" "}
+                    {currentUser.firstName}
+                  </span>
+                </OverlayTrigger>
               </NavLink>
             </>
           ) : (

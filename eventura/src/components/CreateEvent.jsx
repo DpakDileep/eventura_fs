@@ -8,9 +8,10 @@ import Row from "react-bootstrap/Row";
 import { Card, CardBody, Container } from "react-bootstrap";
 
 export default function CreateEvent() {
-  const [validated, setValidated] = useState(false);
   const location = useLocation();
-  const [updateIndex,setUpdateIndex]=useState("")
+  const navigate = useNavigate();
+  const [validated, setValidated] = useState(false);
+  const [updateIndex, setUpdateIndex] = useState("");
   const [newEvent, setNewEvent] = useState({
     title: "",
     organizer: "",
@@ -24,18 +25,23 @@ export default function CreateEvent() {
     category: "",
     description: "",
   });
-  useEffect(() => {
-    setNewEvent(location?.state?.value);
-     setUpdateIndex(location?.state?.value?.id);
-  }, [location.state]);
-
   const [events, setEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
   );
   const [currentUser] = useState(
     JSON.parse(sessionStorage.getItem("currentUser"))
   );
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location?.state?.value) {
+      const event = location.state.value;
+      setNewEvent({
+        ...event,
+        price: event.price ? event.price.replace(/^₹\s*/, "") : "",
+      });
+      setUpdateIndex(event.id);
+    }
+  }, [location.state]);
 
   function handleChange(e) {
     setNewEvent({ ...newEvent, [e.target.name]: e.target.value });
@@ -46,34 +52,36 @@ export default function CreateEvent() {
     e.preventDefault();
     if (form.checkValidity() === false) {
       e.stopPropagation();
-    }else if(location.state){
-      const updatedEvent=events.map((event,index)=>{
-          if(event.id==updateIndex){
-            return{  ...event,  
-      ...newEvent, 
-      id: event.id,
-     price: newEvent.price.startsWith("₹")
-        ? newEvent.price
-        : `₹${newEvent.price}`
-            
-          }
+    } else if (location.state) {
+      const updatedEvent = events.map((event, index) => {
+        if (event.id == updateIndex) {
+          return {
+            ...event,
+            ...newEvent,
+            id: event.id,
+            price:
+              newEvent.price.toLowerCase() === "free"
+                ? "Free"
+                : `₹${newEvent.price}`,
+          };
+        } else {
+          return event;
         }
-        else{
-          return event
-        }
-      })
-      
-      setEvents(updatedEvent)
-      localStorage.setItem("events",JSON.stringify(updatedEvent))
-      navigate("/dashboard")
-    } 
-    else {
+      });
+
+      setEvents(updatedEvent);
+      localStorage.setItem("events", JSON.stringify(updatedEvent));
+      navigate("/dashboard");
+    } else {
       const ids = events.map((event) => Number(event.id));
       const maxId = Math.max(...ids);
       const indexedEvent = {
         ...newEvent,
         id: (maxId + 1).toString(),
-        price: `₹${newEvent.price}`,
+        price:
+          newEvent.price.toLowerCase() === "free"
+            ? "Free"
+            : `₹${newEvent.price}`,
         email: newEvent.email || currentUser?.email,
       };
       const updatedEvents = [...events, indexedEvent];
@@ -95,7 +103,7 @@ export default function CreateEvent() {
       >
         <Card className="shadow-sm" style={{ width: "75%" }}>
           <CardBody className="p-4">
-            <h3 className="text-center mb-4">Host a New Event</h3>
+            {location.state ? <h3 className="text-center mb-4">Update Event</h3> : <h3 className="text-center mb-4">Host a New Event</h3>}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="mb-3">
                 <Form.Group as={Col} md="7" controlId="validationCustom01">
@@ -285,9 +293,24 @@ export default function CreateEvent() {
                 </Form.Group>
               </Row>
 
-             {location.state?<Button type="submit" className="w-100 mt-3  btn-warning bi bi-pencil" size="lg"> Update</Button>:<Button type="submit" className="w-100 mt-3  btn-dark" size="lg">
-                <i className="bi bi-calendar-plus me-2"></i> Publish New Event
-              </Button>}
+              {location.state ? (
+                <Button
+                  type="submit"
+                  className="w-100 mt-3  btn-warning bi bi-pencil"
+                  size="lg"
+                >
+                  {" "}
+                  Update
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="w-100 mt-3  btn-dark"
+                  size="lg"
+                >
+                  <i className="bi bi-calendar-plus me-2"></i> Publish New Event
+                </Button>
+              )}
             </Form>
           </CardBody>
         </Card>

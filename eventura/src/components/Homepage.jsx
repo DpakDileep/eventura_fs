@@ -65,7 +65,7 @@ export default function Homepage() {
               src={Music}
               alt="music"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "music" } })
               }
@@ -77,7 +77,7 @@ export default function Homepage() {
               src={Dance}
               alt="dance"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "dance" } })
               }
@@ -89,7 +89,7 @@ export default function Homepage() {
               src={Gaming}
               alt="gaming"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "gaming" } })
               }
@@ -101,7 +101,7 @@ export default function Homepage() {
               src={Comedy}
               alt="comedy"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "comedy" } })
               }
@@ -113,7 +113,7 @@ export default function Homepage() {
               src={Party}
               alt="party"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "party" } })
               }
@@ -125,7 +125,7 @@ export default function Homepage() {
               src={Tech}
               alt="tech"
               className="img-fluid rounded-circle shadow-lg mb-2"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{ width: "100px", height: "100px", objectFit: "cover", cursor:"pointer" }}
               onClick={() =>
                 navigate("/events", { state: { category: "tech" } })
               }
