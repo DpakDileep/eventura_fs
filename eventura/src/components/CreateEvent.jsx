@@ -25,6 +25,7 @@ export default function CreateEvent() {
   const [events, setEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
   );
+  const [currentUser] = useState(JSON.parse(sessionStorage.getItem("currentUser")))
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -39,7 +40,7 @@ export default function CreateEvent() {
     } else {
       const ids = events.map((event) => Number(event.id));
       const maxId = Math.max(...ids);
-      const indexedEvent = { ...newEvent, id: (maxId + 1).toString() };
+      const indexedEvent = { ...newEvent, id: (maxId + 1).toString(), price: `₹${newEvent.price}`, email: newEvent.email || currentUser?.email };
       const updatedEvents = [...events, indexedEvent];
       localStorage.setItem("events", JSON.stringify(updatedEvents));
       navigate("/");
@@ -167,7 +168,7 @@ export default function CreateEvent() {
                       type="email"
                       placeholder="contact@example.com"
                       name="email"
-                      value={newEvent.email}
+                      value={newEvent.email || currentUser?.email}
                       onChange={handleChange}
                     />
                     <Form.Control.Feedback type="invalid">

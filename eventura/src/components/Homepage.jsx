@@ -3,8 +3,10 @@ import axios from "axios";
 import EventList from "./EventList";
 import { Button, Container } from "react-bootstrap";
 import Banner from "../assets/images/banner2.png";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Homepage() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
   );
@@ -29,14 +31,26 @@ export default function Homepage() {
 
   return (
     <div>
-      <Container>
+      <Container style={{ position: "relative" }}>
         <img
           src={Banner}
           alt="Homepage Banner"
           width={"100%"}
           className="rounded-4"
-          style={{ paddingTop: "120px" }}
+          style={{ marginTop: "120px", zIndex: 0 }}
         />
+        <Button
+          style={{
+            position: "absolute",
+            bottom: 40,
+            right: 255,
+            opacity: "0",
+            zIndex: 1,
+          }}
+          onClick={() => navigate("/events")}
+        >
+          Exploreb
+        </Button>
       </Container>
       <Container className="mt-5">
         <EventList events={events.slice(0, visibleCard)} />
