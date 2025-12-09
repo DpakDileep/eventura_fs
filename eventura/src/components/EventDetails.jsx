@@ -26,11 +26,14 @@ export default function EventDetails() {
   function handleDelete(id) {
     const deletedEvents = allEvents.filter((e) => e.id !== id);
     localStorage.setItem("events", JSON.stringify(deletedEvents));
-    navigate("/dashboard");
+    navigate("/dashboard", {
+      state: { message: "Event deleted successfully!" },
+    });
   }
 
   const [show, setShow] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [tickets, setTickets] = useState(
     JSON.parse(localStorage.getItem("tickets")) || []
@@ -57,7 +60,7 @@ export default function EventDetails() {
 
   function handleRegister() {
     if (quantity < 1) {
-      alert("Please select at least 1 ticket.");
+      setShowAlert(true);
       return;
     } else {
       const ticket = {
@@ -77,7 +80,9 @@ export default function EventDetails() {
       const updatedTickets = [...tickets, ticket];
       setTickets(updatedTickets);
       localStorage.setItem("tickets", JSON.stringify(updatedTickets));
-      navigate("/my-tickets", {state:{message: "Ticket Reserved Successfully!" }});
+      navigate("/my-tickets", {
+        state: { message: "Ticket Reserved Successfully!" },
+      });
       handleHideModal();
     }
   }
@@ -164,7 +169,7 @@ export default function EventDetails() {
                     show={showToast}
                     autohide={false}
                     bg="light"
-                    style={{height:"100px"}}
+                    style={{ height: "100px" }}
                   >
                     <Toast.Body>
                       <p className="mb-2 text-center fw-semibold">
@@ -250,6 +255,22 @@ export default function EventDetails() {
         aria-labelledby="example-custom-modal-styling-title"
         contentClassName="rounded-0"
       >
+        <ToastContainer
+          position="top-center"
+          className="p-3 mt-2"
+        >
+          <Toast
+            onClose={() => setShowAlert(false)}
+            show={showAlert}
+            delay={3000}
+            autohide
+            bg="warning"
+          >
+            <Toast.Body className="text-light bi bi-exclamation-triangle">{" "}
+              Please select atleast 1 ticket
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
         <Modal.Body className="p-0">
           <Row style={{ minHeight: "80vh" }}>
             <Col lg={8} md={8} className="p-5 d-flex flex-column">

@@ -29,7 +29,7 @@ export default function AppNavbar() {
   function handleLogout() {
     sessionStorage.removeItem("currentUser");
     sessionStorage.removeItem("isLoggedIn");
-    navigate("/");
+    navigate("/", { state: { message: "Logged out successfully!" } });
   }
 
   return (

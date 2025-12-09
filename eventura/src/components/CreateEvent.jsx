@@ -71,7 +71,7 @@ export default function CreateEvent() {
 
       setEvents(updatedEvent);
       localStorage.setItem("events", JSON.stringify(updatedEvent));
-      navigate("/dashboard");
+      navigate("/dashboard", {state:{messageUpdate: "Event updated successfully!" }});
     } else {
       const ids = events.map((event) => Number(event.id));
       const maxId = Math.max(...ids);
@@ -86,7 +86,7 @@ export default function CreateEvent() {
       };
       const updatedEvents = [...events, indexedEvent];
       localStorage.setItem("events", JSON.stringify(updatedEvents));
-      navigate("/dashboard");
+      navigate("/dashboard", {state:{messagePublish: "Event published successfully!" }});
     }
 
     setValidated(true);

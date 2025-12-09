@@ -37,7 +37,7 @@ export default function Signup() {
       localStorage.setItem("users", JSON.stringify([...users, user]));
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("currentUser", JSON.stringify(user));
-      navigate("/");
+      navigate("/", { state: { message: "Account created successfully!" } });
     }
     setValidated(true);
   };

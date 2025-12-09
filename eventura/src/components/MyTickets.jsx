@@ -13,7 +13,7 @@ export default function MyTickets() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showToast, setShowToast] = useState(false);
-  const tickets = JSON.parse(localStorage.getItem("tickets")) || {};
+  const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
   const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
   const userTickets = tickets.filter((t) => t.userEmail === currentUser?.email);
 
