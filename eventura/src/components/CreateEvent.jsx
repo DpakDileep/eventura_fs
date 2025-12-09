@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -92,10 +92,13 @@ export default function CreateEvent() {
     setValidated(true);
   };
 
-  if (!currentUser) {
-  return <Navigate to="/login" state={{ message: "Please login to create an event" }} />;
-}
-
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login", {
+        state: { messageEventCreation: "Please login to create an event" },
+      });
+    }
+  }, [currentUser, navigate]);
 
   return (
     <div>
@@ -108,7 +111,11 @@ export default function CreateEvent() {
       >
         <Card className="shadow-sm" style={{ width: "75%" }}>
           <CardBody className="p-4">
-            {location.state ? <h3 className="text-center mb-4">Update Event</h3> : <h3 className="text-center mb-4">Host a New Event</h3>}
+            {location.state ? (
+              <h3 className="text-center mb-4">Update Event</h3>
+            ) : (
+              <h3 className="text-center mb-4">Host a New Event</h3>
+            )}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="mb-3">
                 <Form.Group as={Col} md="7" controlId="validationCustom01">

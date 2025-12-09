@@ -72,7 +72,7 @@ export default function AppNavbar() {
           </InputGroup.Text>
         </InputGroup>
         <Nav className="ms-auto">
-          <NavLink>My Tickets</NavLink>
+          <NavLink onClick={() => navigate("/my-tickets")}>My Tickets</NavLink>
           <NavLink onClick={() => navigate("/create-event")}>
             Create Event
           </NavLink>

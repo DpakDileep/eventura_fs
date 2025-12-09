@@ -8,6 +8,7 @@ import CreateEvent from "./components/CreateEvent";
 import EventDetails from "./components/EventDetails";
 import EventsPage from "./components/EventsPage";
 import Dashboard from "./components/Dashboard";
+import MyTickets from "./components/MyTickets";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/create-event" element={<CreateEvent/>}></Route>
           <Route path="/event-details" element={<EventDetails/>}></Route>
           <Route path="/dashboard" element={<Dashboard/>}></Route>
+          <Route path="/my-tickets" element={<MyTickets/>}></Route>
         </Routes>
       </BrowserRouter>
     </>

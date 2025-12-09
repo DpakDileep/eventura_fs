@@ -77,7 +77,7 @@ export default function EventDetails() {
       const updatedTickets = [...tickets, ticket];
       setTickets(updatedTickets);
       localStorage.setItem("tickets", JSON.stringify(updatedTickets));
-      alert("Ticket Reserved Successfully!");
+      navigate("/my-tickets", {state:{message: "Ticket Reserved Successfully!" }});
       handleHideModal();
     }
   }

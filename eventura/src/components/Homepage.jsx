@@ -53,7 +53,7 @@ export default function Homepage() {
           <Toast
             onClose={() => setShowToast(false)}
             show={showToast}
-            delay={5000}
+            delay={3000}
             autohide
             bg="success"
           >

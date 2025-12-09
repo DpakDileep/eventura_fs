@@ -25,7 +25,7 @@ export default function Login() {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    if (location.state?.message) {
+    if (location.state?.messageEventCreation || location.state?.messageMyTicket) {
       setShowToast(true);
     }
   }, [location.state]);
@@ -41,7 +41,6 @@ export default function Login() {
       (u) => u.email == user.email && u.password == user.password
     );
     if (existUser) {
-      // alert("Login Succesfull");
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("currentUser", JSON.stringify(existUser));
       navigate("/", {state:{message: "Login successful!" }});
@@ -72,7 +71,7 @@ export default function Login() {
             autohide
             bg="warning"
           >
-            <Toast.Body>{location.state?.message}</Toast.Body>
+            <Toast.Body>{location.state?.messageEventCreation || location.state?.messageMyTicket}</Toast.Body>
           </Toast>
         </ToastContainer>
         <Card style={{ width: "80%", maxWidth: "900px" }}>
