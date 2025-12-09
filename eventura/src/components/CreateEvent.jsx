@@ -86,11 +86,16 @@ export default function CreateEvent() {
       };
       const updatedEvents = [...events, indexedEvent];
       localStorage.setItem("events", JSON.stringify(updatedEvents));
-      navigate("/");
+      navigate("/dashboard");
     }
 
     setValidated(true);
   };
+
+  if (!currentUser) {
+  return <Navigate to="/login" state={{ message: "Please login to create an event" }} />;
+}
+
 
   return (
     <div>

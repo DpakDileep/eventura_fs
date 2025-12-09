@@ -145,9 +145,10 @@ export default function Signup() {
                   />
                 </Form.Group>
 
-                <Button type="submit" className="w-100">
+                <Button type="submit" className="w-100 mb-2">
                   Create Account
                 </Button>
+                <p>Have an account? <a href="/login">Login</a></p>
               </Form>
             </Card.Body>
           </Col>

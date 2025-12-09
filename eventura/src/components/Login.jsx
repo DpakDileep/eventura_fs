@@ -1,7 +1,17 @@
-import React, { useState } from "react";
-import { Card, Col, Row, Form, InputGroup, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  Col,
+  Row,
+  Form,
+  InputGroup,
+  Button,
+  Container,
+  ToastContainer,
+  Toast,
+} from "react-bootstrap";
 import loginimage from "../assets/images/login-image.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [validated, setValidated] = useState(false);
@@ -10,7 +20,15 @@ export default function Login() {
     JSON.parse(localStorage.getItem("users")) || []
   );
   const navigate = useNavigate();
-  const [showPassword,setShowPassword]=useState(false)
+  const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setShowToast(true);
+    }
+  }, [location.state]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -37,70 +55,103 @@ export default function Login() {
   }
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "calc(100vh - 108px )" }}
-    >
-      <Card style={{ width: "80%", maxWidth: "900px" }}>
-        <Row className="g-0">
-          <Col md={6}>
-            <Card.Img
-              src={loginimage}
-              alt="Signup Illustration"
-              style={{ height: "100%", objectFit: "cover" }}
-            />
-          </Col>
-          <Col md={6}>
-            <Card.Body>
-              <h3 className="text-center mb-4">USER LOGIN</h3>
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Row className="mb-3">
-                  <Form.Group
-                    className="mb-3"
-                    controlId="validationCustomUsername"
-                  >
-                    <Form.Label>Email</Form.Label>
-                    <InputGroup hasValidation>
-                      <InputGroup.Text>@</InputGroup.Text>
-                      <Form.Control
-                        type="email"
-                        placeholder="Email"
-                        required
-                        name="email"
-                        onChange={handleChange}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please enter a valid email.
-                      </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Row>
-                <Row className="mb-3">
-                  <Form.Group as={Col} md="12" controlId="validationCustom03">
-                    <Form.Label>Password</Form.Label>
-                    <InputGroup>
-                    <Form.Control
-                      type={showPassword?"text":"password"}
-                      placeholder="********"
-                      required
-                      name="password"
-                      onChange={handleChange}
-                    />
-                    <Button variant="outline-secondary border-0" onClick={()=>showPassword?setShowPassword(false):setShowPassword(true)}><i className={showPassword?"bi bi-eye-slash":"bi bi-eye"}></i></Button>
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid password.
-                    </Form.Control.Feedback>
-                    </InputGroup>
-                  </Form.Group>
-                </Row>
-                <Button type="submit" className="w-100">
-                  LOGIN
-                </Button>
-              </Form>
-            </Card.Body>
-          </Col>
-        </Row>
-      </Card>
-    </div>
+    <>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "calc(100vh - 108px )" }}
+      >
+        <ToastContainer
+          position="top-end"
+          className="p-3"
+          style={{ marginTop: "90px" }}
+        >
+          <Toast
+            onClose={() => setShowToast(false)}
+            show={showToast}
+            delay={3000}
+            autohide
+            bg="warning"
+          >
+            <Toast.Body>{location.state?.message}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+        <Card style={{ width: "80%", maxWidth: "900px" }}>
+          <Row className="g-0">
+            <Col md={6}>
+              <Card.Img
+                src={loginimage}
+                alt="Signup Illustration"
+                style={{ height: "100%", objectFit: "cover" }}
+              />
+            </Col>
+            <Col md={6}>
+              <Card.Body>
+                <h3 className="text-center mb-4">USER LOGIN</h3>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <Row className="mb-3">
+                    <Form.Group
+                      className="mb-3"
+                      controlId="validationCustomUsername"
+                    >
+                      <Form.Label>Email</Form.Label>
+                      <InputGroup hasValidation>
+                        <InputGroup.Text>@</InputGroup.Text>
+                        <Form.Control
+                          type="email"
+                          placeholder="Email"
+                          required
+                          name="email"
+                          onChange={handleChange}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Please enter a valid email.
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+                  <Row className="mb-3">
+                    <Form.Group as={Col} md="12" controlId="validationCustom03">
+                      <Form.Label>Password</Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          type={showPassword ? "text" : "password"}
+                          placeholder="********"
+                          required
+                          name="password"
+                          onChange={handleChange}
+                        />
+                        <Button
+                          variant="outline-secondary border-0"
+                          onClick={() =>
+                            showPassword
+                              ? setShowPassword(false)
+                              : setShowPassword(true)
+                          }
+                        >
+                          <i
+                            className={
+                              showPassword ? "bi bi-eye-slash" : "bi bi-eye"
+                            }
+                          ></i>
+                        </Button>
+                        <Form.Control.Feedback type="invalid">
+                          Please provide a valid password.
+                        </Form.Control.Feedback>
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+                  <Button type="submit" className="w-100 mb-2">
+                    LOGIN
+                  </Button>
+                  <p>
+                    New here? <a href="/signup">Create an account</a>
+                  </p>
+                </Form>
+              </Card.Body>
+            </Col>
+          </Row>
+        </Card>
+      </div>
+    </>
   );
 }

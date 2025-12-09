@@ -6,7 +6,7 @@ export default function EventDetails() {
   const location = useLocation();
   const navigate = useNavigate();
   const [event, setEvent] = useState(location?.state?.event);
-  const currentUser = JSON.parse(sessionStorage?.getItem("currentUser"));
+  const currentUser = JSON.parse(sessionStorage?.getItem("currentUser")) || {};
   const [allEvents, setAllEvents] = useState(
     JSON.parse(localStorage.getItem("events"))||[]
   );
