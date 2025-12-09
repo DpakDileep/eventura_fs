@@ -41,10 +41,10 @@ export default function Login() {
       (u) => u.email == user.email && u.password == user.password
     );
     if (existUser) {
-      alert("Login Succesfull");
+      // alert("Login Succesfull");
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("currentUser", JSON.stringify(existUser));
-      navigate("/");
+      navigate("/", {state:{message: "Login successful!" }});
     } else {
       alert("Invalid Email or Password");
     }

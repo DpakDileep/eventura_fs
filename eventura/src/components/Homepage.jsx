@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import EventList from "./EventList";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Toast, ToastContainer } from "react-bootstrap";
 import Banner from "../assets/images/banner2.png";
 import Music from "../assets/images/music.svg";
 import Dance from "../assets/images/dance.svg";
@@ -9,10 +9,12 @@ import Gaming from "../assets/images/gaming.svg";
 import Comedy from "../assets/images/comedy.svg";
 import Party from "../assets/images/party.svg";
 import Tech from "../assets/images/tech.svg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Homepage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showToast, setShowToast] = useState(false);
   const [events, setEvents] = useState(
     JSON.parse(localStorage.getItem("events")) || []
   );
@@ -27,6 +29,12 @@ export default function Homepage() {
     }
   }, []);
 
+  useEffect(() => {
+      if (location.state?.message) {
+        setShowToast(true);
+      }
+    }, [location.state]);
+
   function handleShowMore() {
     setVisibleCard(events.length);
   }
@@ -37,6 +45,21 @@ export default function Homepage() {
 
   return (
     <div>
+      <ToastContainer
+          position="top-end"
+          className="p-3"
+          style={{ marginTop: "90px" }}
+        >
+          <Toast
+            onClose={() => setShowToast(false)}
+            show={showToast}
+            delay={5000}
+            autohide
+            bg="success"
+          >
+            <Toast.Body className="text-light bi bi-check-circle-fill">{" "}{location.state?.message}</Toast.Body>
+          </Toast>
+        </ToastContainer>
       <Container style={{ position: "relative" }}>
         <img
           src={Banner}

@@ -8,6 +8,8 @@ import {
   Card,
   Form,
   Image,
+  Toast,
+  ToastContainer,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -28,6 +30,7 @@ export default function EventDetails() {
   }
 
   const [show, setShow] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [tickets, setTickets] = useState(
     JSON.parse(localStorage.getItem("tickets")) || []
@@ -37,8 +40,7 @@ export default function EventDetails() {
     if (isLoggedIn === true) {
       setShow(true);
     } else {
-      alert("please Login to reserve a seat");
-      navigate("/login");
+      setShowToast(true);
     }
   }
   function handleHideModal() {
@@ -145,12 +147,50 @@ export default function EventDetails() {
           </Col>
           <Col md={4}>
             <div
-              className="p-4 rounded-4"
+              className="p-4 rounded-4 position-relative"
               style={{
                 border: "1px solid #e0e0e0",
                 backgroundColor: "white",
               }}
             >
+              {showToast && (
+                <ToastContainer
+                  position="middle-center"
+                  className="mt-2 shadow-lg"
+                  style={{ zIndex: 9999 }}
+                >
+                  <Toast
+                    onClose={() => setShowToast(false)}
+                    show={showToast}
+                    autohide={false}
+                    bg="light"
+                    style={{height:"100px"}}
+                  >
+                    <Toast.Body>
+                      <p className="mb-2 text-center fw-semibold">
+                        Please login to reserve a seat
+                      </p>
+                      <div className="d-flex justify-content-center gap-3">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => navigate("/login")}
+                        >
+                          OK
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => setShowToast(false)}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </Toast.Body>
+                  </Toast>
+                </ToastContainer>
+              )}
+
               <h4 style={{ marginBottom: "16px" }}>Event Details</h4>
 
               <p style={{ marginBottom: "8px" }}>
@@ -190,7 +230,11 @@ export default function EventDetails() {
                   </div>
                 </>
               ) : (
-                <Button variant="primary" className="w-100 mt-3 fw-bold py-2" onClick={handleShowModal}>
+                <Button
+                  variant="primary"
+                  className="w-100 mt-3 fw-bold py-2"
+                  onClick={handleShowModal}
+                >
                   Reserve a Seat
                 </Button>
               )}
