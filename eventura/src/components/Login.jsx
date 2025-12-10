@@ -60,7 +60,7 @@ export default function Login() {
     <>
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "calc(100vh - 108px )" }}
+        style={{ minHeight: "calc(100vh - 108px )", marginTop:"80px" }}
       >
         <ToastContainer
           position="top-end"

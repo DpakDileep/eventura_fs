@@ -71,7 +71,7 @@ export default function MyTickets() {
                       }}
                     >
                       <Row>
-                        <Col md={8} className="position-relative">
+                        <Col md={8} className="position-relative px-0" >
                           <img
                             src={t.eventImage}
                             style={{
@@ -86,7 +86,7 @@ export default function MyTickets() {
                               position: "absolute",
                               top: 0,
                               left: 0,
-                              right: "15px",
+                              right: 0,
                               bottom: 0,
                               backgroundColor: "rgba(0,0,0,0.55)",
                             }}
@@ -110,6 +110,7 @@ export default function MyTickets() {
                         <Col
                           md={4}
                           className="position-relative d-flex align-items-center"
+                          style={{ backgroundColor: "#f8f9fa" }}
                         >
                           <div className="p-4 w-100">
                             <h5 className="fw-bold mb-3">Ticket Details</h5>

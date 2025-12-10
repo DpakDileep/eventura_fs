@@ -91,7 +91,8 @@ export default function EventDetails() {
     <>
       <Container
         className="d-flex justify-content-center"
-        style={{ paddingTop: "140px", position: "relative" }}
+        style={{ paddingTop: "140px", position: "relative",overflow: "hidden" }}
+        
       >
         <div
           style={{

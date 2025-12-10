@@ -49,7 +49,7 @@ export default function Signup() {
   return (
     <div
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: "calc(100vh - 108px)" }}
+      style={{ minHeight: "calc(100vh - 108px)", marginTop: "80px" }}
     >
       <Card style={{ width: "80%", maxWidth: "900px" }}>
         <Row className="g-0">
