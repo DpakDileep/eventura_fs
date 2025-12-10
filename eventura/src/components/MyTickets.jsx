@@ -13,7 +13,7 @@ export default function MyTickets() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showToast, setShowToast] = useState(false);
-  const tickets = JSON.parse(localStorage.getItem("tickets")) || {};
+  const tickets = JSON.parse(localStorage.getItem("tickets")) || [];
   const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
   const userTickets = tickets.filter((t) => t.userEmail === currentUser?.email);
 
@@ -110,6 +110,7 @@ export default function MyTickets() {
                         <Col
                           md={4}
                           className="position-relative d-flex align-items-center"
+                          style={{ backgroundColor: "#f8f9fa" }}
                         >
                           <div className="p-4 w-100">
                             <h5 className="fw-bold mb-3">Ticket Details</h5>
