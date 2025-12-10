@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [validated, setValidated] = useState(false);
-  const [showPassword,setShowPassword]=useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState({
     firstName: "",
@@ -34,7 +34,9 @@ export default function Signup() {
         email: "",
         password: "",
       });
-      localStorage.setItem("users", JSON.stringify([...users, user]));
+      const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const updateUser=[...existingUsers,user]
+      localStorage.setItem("users", JSON.stringify(updateUser));
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("currentUser", JSON.stringify(user));
       navigate("/", { state: { message: "Account created successfully!" } });
@@ -118,20 +120,31 @@ export default function Signup() {
                   <Form.Group as={Col} md="12" controlId="validationCustom03">
                     <Form.Label>Password</Form.Label>
                     <InputGroup>
-                    <Form.Control
-                      type={showPassword?"text":"password"}
-                      placeholder="********"
-                      required
-                      name="password"
-                      onChange={handleChange}
-                      value={user.password}
-                    />
-                    <Button variant="outline-secondary border-0" onClick={()=>showPassword?setShowPassword(false):setShowPassword(true)}>
-                      <i className={showPassword?"bi bi-eye-slash":"bi bi-eye"}></i>
-                    </Button>
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid password.
-                    </Form.Control.Feedback>
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="********"
+                        required
+                        name="password"
+                        onChange={handleChange}
+                        value={user.password}
+                      />
+                      <Button
+                        variant="outline-secondary border-0"
+                        onClick={() =>
+                          showPassword
+                            ? setShowPassword(false)
+                            : setShowPassword(true)
+                        }
+                      >
+                        <i
+                          className={
+                            showPassword ? "bi bi-eye-slash" : "bi bi-eye"
+                          }
+                        ></i>
+                      </Button>
+                      <Form.Control.Feedback type="invalid">
+                        Please provide a valid password.
+                      </Form.Control.Feedback>
                     </InputGroup>
                   </Form.Group>
                 </Row>
@@ -148,7 +161,9 @@ export default function Signup() {
                 <Button type="submit" className="w-100 mb-2">
                   Create Account
                 </Button>
-                <p>Have an account? <a href="/login">Login</a></p>
+                <p>
+                  Have an account? <a href="/login">Login</a>
+                </p>
               </Form>
             </Card.Body>
           </Col>
