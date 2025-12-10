@@ -12,26 +12,27 @@ import MyTickets from "./components/MyTickets";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 
-
 function App() {
   return (
-    <>
+    <div className="d-flex flex-column min-vh-100">
       <BrowserRouter>
         <ScrollToTop />
         <AppNavbar />
-        <Routes>
-          <Route path="/" element={<Homepage />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/events" element={<EventsPage />}></Route>
-          <Route path="/create-event" element={<CreateEvent />}></Route>
-          <Route path="/event-details" element={<EventDetails />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/my-tickets" element={<MyTickets />}></Route>
-        </Routes>
-        <Footer/>
+        <div className="flex-grow-1">
+          <Routes>
+            <Route path="/" element={<Homepage />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/events" element={<EventsPage />}></Route>
+            <Route path="/create-event" element={<CreateEvent />}></Route>
+            <Route path="/event-details" element={<EventDetails />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route path="/my-tickets" element={<MyTickets />}></Route>
+          </Routes>
+        </div>
+        <Footer />
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

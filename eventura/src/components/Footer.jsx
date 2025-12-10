@@ -126,7 +126,6 @@ export default function Footer() {
                   color: "#C2C2CC",
                   textDecoration: "none",
                   fontSize: "14px",
-                  textDecoration: "none",
                 }}
               >
                 support@eventura.com
