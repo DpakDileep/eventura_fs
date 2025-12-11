@@ -388,19 +388,17 @@ export default function EventDetails() {
               </tr>
             </thead>
             <tbody>
-              {tickets.map((t, i) => {
-                if (t.eventId == event.id) {
-                  return (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      <td>{t.userFirstName + t.userLastName}</td>
-                      <td>{t.userEmail}</td>
-                      <td>{t.quantity}</td>
-                      <td>{t.ticketId}</td>
-                    </tr>
-                  );
-                }
-              })}
+              {tickets
+                .filter((t) => t.eventId == event.id)
+                .map((t, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{t.userFirstName + t.userLastName}</td>
+                    <td>{t.userEmail}</td>
+                    <td>{t.quantity}</td>
+                    <td>{t.ticketId}</td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
           <Button
