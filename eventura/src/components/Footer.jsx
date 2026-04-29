@@ -121,14 +121,14 @@ export default function Footer() {
                 <strong>Need Help?</strong>
               </p>
               <a
-                href="mailto:support@eventura.com"
+                href="mailto:eventura.support@gmail.com"
                 style={{
                   color: "#C2C2CC",
                   textDecoration: "none",
                   fontSize: "14px",
                 }}
               >
-                support@eventura.com
+                eventura.support@gmail.com
               </a>
             </Col>
           </Row>

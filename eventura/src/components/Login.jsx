@@ -1,54 +1,47 @@
 import React, { useEffect, useState } from "react";
 import {
-  Card,
-  Col,
-  Row,
-  Form,
-  InputGroup,
-  Button,
-  Container,
-  ToastContainer,
-  Toast,
+  Card, Col, Row, Form, InputGroup, Button,
+  ToastContainer, Toast,
 } from "react-bootstrap";
 import loginimage from "../assets/images/login-image.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import { login } from "../api/authService";
 
 export default function Login() {
   const [validated, setValidated] = useState(false);
   const [user, setUser] = useState({ email: "", password: "" });
-  const [users, setUsers] = useState(
-    JSON.parse(localStorage.getItem("users")) || []
-  );
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (
-      location.state?.messageEventCreation ||
-      location.state?.messageMyTicket
-    ) {
+    if (location.state?.messageEventCreation || location.state?.messageMyTicket) {
+      setToastMsg(location.state.messageEventCreation || location.state.messageMyTicket);
       setShowToast(true);
     }
   }, [location.state]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
     event.preventDefault();
-    const existUser = users.find(
-      (u) => u.email == user.email && u.password == user.password
-    );
-    if (existUser) {
-      sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("currentUser", JSON.stringify(existUser));
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+      setValidated(true);
+      return;
+    }
+    setValidated(true);
+    setLoading(true);
+    try {
+      await login(user.email, user.password);
       navigate("/", { state: { message: "Login successful!" } });
-    } else {
+    } catch (err) {
+      setToastMsg("Invalid email or password");
       setShowToast(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,13 +53,9 @@ export default function Login() {
     <>
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "calc(100vh - 108px )", marginTop:"80px" }}
+        style={{ minHeight: "calc(100vh - 108px)", marginTop: "80px" }}
       >
-        <ToastContainer
-          position="top-end"
-          className="p-3"
-          style={{ marginTop: "90px" }}
-        >
+        <ToastContainer position="top-end" className="p-3" style={{ marginTop: "90px" }}>
           <Toast
             onClose={() => setShowToast(false)}
             show={showToast}
@@ -74,10 +63,7 @@ export default function Login() {
             autohide
             bg="warning"
           >
-            <Toast.Body className="bi bi-exclamation-triangle">{" "}
-              {location.state?.messageEventCreation ||
-                location.state?.messageMyTicket || "Invalid email or password"}
-            </Toast.Body>
+            <Toast.Body className="bi bi-exclamation-triangle"> {toastMsg}</Toast.Body>
           </Toast>
         </ToastContainer>
         <Card style={{ width: "80%", maxWidth: "900px" }}>
@@ -85,7 +71,7 @@ export default function Login() {
             <Col md={6}>
               <Card.Img
                 src={loginimage}
-                alt="Signup Illustration"
+                alt="Login Illustration"
                 style={{ height: "100%", objectFit: "cover" }}
               />
             </Col>
@@ -94,10 +80,7 @@ export default function Login() {
                 <h3 className="text-center mb-4">USER LOGIN</h3>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <Row className="mb-3">
-                    <Form.Group
-                      className="mb-3"
-                      controlId="validationCustomUsername"
-                    >
+                    <Form.Group className="mb-3" controlId="validationCustomUsername">
                       <Form.Label>Email</Form.Label>
                       <InputGroup hasValidation>
                         <InputGroup.Text>@</InputGroup.Text>
@@ -127,17 +110,9 @@ export default function Login() {
                         />
                         <Button
                           variant="outline-secondary border-0"
-                          onClick={() =>
-                            showPassword
-                              ? setShowPassword(false)
-                              : setShowPassword(true)
-                          }
+                          onClick={() => setShowPassword(!showPassword)}
                         >
-                          <i
-                            className={
-                              showPassword ? "bi bi-eye-slash" : "bi bi-eye"
-                            }
-                          ></i>
+                          <i className={showPassword ? "bi bi-eye-slash" : "bi bi-eye"}></i>
                         </Button>
                         <Form.Control.Feedback type="invalid">
                           Please provide a valid password.
@@ -145,8 +120,8 @@ export default function Login() {
                       </InputGroup>
                     </Form.Group>
                   </Row>
-                  <Button type="submit" className="w-100 mb-2">
-                    LOGIN
+                  <Button type="submit" className="w-100 mb-2" disabled={loading}>
+                    {loading ? "Logging in..." : "LOGIN"}
                   </Button>
                   <p>
                     New here? <a href="/signup">Create an account</a>
